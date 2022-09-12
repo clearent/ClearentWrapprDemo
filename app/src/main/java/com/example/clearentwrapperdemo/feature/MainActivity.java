@@ -159,11 +159,6 @@ public class MainActivity extends AppCompatActivity implements ClearentWrapperLi
     }
 
     @Override
-    public void didFindRecentlyUsedReaders(@NonNull List<ReaderStatus> list) {
-        navigateToPairingScreen(list);
-    }
-
-    @Override
     public void didFinishSignature(@Nullable SignatureResponse signatureResponse, @Nullable ResponseError responseError) {
         if (signatureResponse != null) {
             navigateToResultScreen(
@@ -209,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements ClearentWrapperLi
 
     @Override
     public void didFinishTransaction(@Nullable TransactionResponse transactionResponse, @Nullable ResponseError responseError) {
-        if (transactionResponse != null) {
+        if (transactionResponse == null) {
             navigateToResultScreen(
                     new ResultFragment.ResultMessage(
                             generalErrorMessage,

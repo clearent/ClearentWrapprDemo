@@ -12,30 +12,16 @@ import com.clearent.idtech.android.wrapper.model.ReaderStatus;
 import com.example.clearentwrapperdemo.R;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ReadersListAdapter extends RecyclerView.Adapter<ReadersListAdapter.ViewHolder> {
 
     private final List<ReaderStatus> mData;
-    private final ItemClickListener mClickListener;
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-
-        public ViewHolder(View view) {
-            super(view);
-
-            textView = (TextView) view.findViewById(R.id.reader_name);
-
-            int pos = getBindingAdapterPosition();
-            if (pos == RecyclerView.NO_POSITION) return;
-
-            view.setOnClickListener(v -> mClickListener.onItemClick(getItem(pos)));
-        }
-    }
+    private final ItemClickListener itemClickListener;
 
     public ReadersListAdapter(List<ReaderStatus> data, ItemClickListener itemClickListener) {
         this.mData = data;
-        this.mClickListener = itemClickListener;
+        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -44,7 +30,11 @@ public class ReadersListAdapter extends RecyclerView.Adapter<ReadersListAdapter.
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.reader_item, viewGroup, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, (pos) -> {
+            if (pos == RecyclerView.NO_POSITION) return;
+
+            itemClickListener.onItemClick(getItem(pos));
+        });
     }
 
     @Override
@@ -64,5 +54,17 @@ public class ReadersListAdapter extends RecyclerView.Adapter<ReadersListAdapter.
 
     public interface ItemClickListener {
         void onItemClick(ReaderStatus readerStatus);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textView;
+
+        public ViewHolder(View view, Consumer<Integer> lambda) {
+            super(view);
+
+            textView = view.findViewById(R.id.reader_name);
+
+            view.setOnClickListener(v -> lambda.accept(getBindingAdapterPosition()));
+        }
     }
 }
