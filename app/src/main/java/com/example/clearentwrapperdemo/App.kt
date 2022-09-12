@@ -2,9 +2,9 @@ package com.example.clearentwrapperdemo
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.clearent.idtech.android.wrapper.SDKWrapper
+import com.clearent.idtech.android.wrapper.ClearentWrapper
 
-class App: Application() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -16,7 +16,7 @@ class App: Application() {
     }
 
     private fun initSdk() =
-        SDKWrapper.initializeReader(
+        ClearentWrapper.initializeSDK(
             applicationContext,
             Constants.BASE_URL_SANDBOX,
             Constants.PUBLIC_KEY_SANDBOX,

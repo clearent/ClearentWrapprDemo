@@ -9,7 +9,7 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.clearent.idtech.android.wrapper.SDKWrapper
+import com.clearent.idtech.android.wrapper.ClearentWrapper
 import com.clearent.idtech.android.wrapper.ui.util.checkPermissionsToRequest
 import com.example.clearentwrapperdemo.R
 import com.example.clearentwrapperdemo.data.ClearentDemoDataSource
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSdkListener() {
-        SDKWrapper.setListener(ClearentDemoDataSource)
+        ClearentWrapper.setListener(ClearentDemoDataSource)
     }
 
     private fun setupViewModel() {
@@ -108,6 +108,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        SDKWrapper.removeListener()
+        ClearentWrapper.removeListener()
     }
 }

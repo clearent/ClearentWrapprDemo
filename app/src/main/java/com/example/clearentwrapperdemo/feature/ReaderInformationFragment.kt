@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.clearent.idtech.android.wrapper.SDKWrapper
+import com.clearent.idtech.android.wrapper.ClearentWrapper
 import com.clearent.idtech.android.wrapper.listener.ReaderStatusListener
 import com.clearent.idtech.android.wrapper.model.ReaderState
 import com.clearent.idtech.android.wrapper.model.ReaderStatus
@@ -39,7 +39,7 @@ class ReaderInformationFragment : Fragment(), ReaderStatusListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        SDKWrapper.addReaderStatusListener(this)
+        ClearentWrapper.addReaderStatusListener(this)
     }
 
     private fun renderReaderStatus(readerState: ReaderState) = lifecycleScope.launch {
@@ -74,7 +74,7 @@ class ReaderInformationFragment : Fragment(), ReaderStatusListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        SDKWrapper.removeReaderStatusListener(this)
+        ClearentWrapper.removeReaderStatusListener(this)
     }
 
     override fun onReaderStatusUpdate(readerStatus: ReaderStatus?) {
