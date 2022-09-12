@@ -49,12 +49,6 @@ object ClearentDemoDataSource : ClearentWrapperListener {
         }
     }
 
-    override fun didFindRecentlyUsedReaders(readers: List<ReaderStatus>) {
-        coroutineScope.launch {
-            _dataFlow.emit(DataStatus.ReadersList(readers))
-        }
-    }
-
     override fun didFinishSignature(response: SignatureResponse?, error: ResponseError?) {
         coroutineScope.launch {
             val errorMessage = response?.payload?.error?.errorMessage
@@ -80,18 +74,6 @@ object ClearentDemoDataSource : ClearentWrapperListener {
                     ?: generalErrorMessage
                 _dataFlow.emit(DataStatus.ResultMessage.Error(errorMessage))
             }
-        }
-    }
-
-    override fun didNotFindReaders() {
-        coroutineScope.launch {
-            _dataFlow.emit(DataStatus.ReadersList(listOf()))
-        }
-    }
-
-    override fun didNotFindRecentlyUsedReaders() {
-        coroutineScope.launch {
-            _dataFlow.emit(DataStatus.ReadersList(listOf()))
         }
     }
 
