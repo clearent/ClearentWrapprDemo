@@ -22,7 +22,8 @@ public class App extends Application {
                 getApplicationContext(),
                 Constants.BASE_URL_SANDBOX,
                 Constants.PUBLIC_KEY_SANDBOX,
-                Constants.API_KEY_SANDBOX
+                Constants.API_KEY_SANDBOX,
+                true // enable enhanced messages
         );
     }
 }

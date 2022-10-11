@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.clearent.idtech.android.wrapper.ClearentWrapper;
 import com.clearent.idtech.android.wrapper.http.model.ResponseError;
 import com.clearent.idtech.android.wrapper.http.model.SignatureResponse;
+import com.clearent.idtech.android.wrapper.http.model.TerminalSettings;
 import com.clearent.idtech.android.wrapper.http.model.TransactionResponse;
 import com.clearent.idtech.android.wrapper.http.model.TransactionResult;
 import com.clearent.idtech.android.wrapper.listener.ClearentWrapperListener;
@@ -24,7 +25,6 @@ import com.example.clearentwrapperdemo.R;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class MainActivity extends AppCompatActivity implements ClearentWrapperListener {
 
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements ClearentWrapperLi
         navigateToScreen(
                 new ResultFragment(
                         resultMessage,
-                        (Runnable) this::navigateToHomeScreen
+                        this::navigateToHomeScreen
                 )
         );
     }
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ClearentWrapperLi
         navigateToScreen(
                 new PairingFragment(
                         list,
-                        (Consumer<ReaderStatus>) readerStatus -> {
+                        readerStatus -> {
                             viewModel.pairReader(readerStatus);
                             navigateToLoadingFragment(pairingLoadingStatusTitle, "Pairing ongoing");
                         },
@@ -272,5 +272,20 @@ public class MainActivity extends AppCompatActivity implements ClearentWrapperLi
     @Override
     public void userActionNeeded(@NonNull UserAction userAction) {
         navigateToLoadingFragment(transactionLoadingStatusTitle, userAction.getMessage());
+    }
+
+    @Override
+    public void didEncounteredInternetConnectionError() {
+        navigateToResultScreen(
+                new ResultFragment.ResultMessage(
+                        "Internet connection error.",
+                        null,
+                        ResultFragment.ResultType.FAILURE
+                )
+        );
+    }
+
+    @Override
+    public void didReceiveTerminalSettings(@NonNull TerminalSettings terminalSettings) {
     }
 }
