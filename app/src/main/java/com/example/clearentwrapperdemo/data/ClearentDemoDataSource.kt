@@ -1,9 +1,6 @@
 package com.example.clearentwrapperdemo.data
 
-import com.clearent.idtech.android.wrapper.http.model.ResponseError
-import com.clearent.idtech.android.wrapper.http.model.SignatureResponse
-import com.clearent.idtech.android.wrapper.http.model.TransactionResponse
-import com.clearent.idtech.android.wrapper.http.model.TransactionResult
+import com.clearent.idtech.android.wrapper.http.model.*
 import com.clearent.idtech.android.wrapper.listener.ClearentWrapperListener
 import com.clearent.idtech.android.wrapper.model.ReaderStatus
 import com.clearent.idtech.android.wrapper.model.UserAction
@@ -40,6 +37,12 @@ object ClearentDemoDataSource : ClearentWrapperListener {
     override fun didEncounteredGeneralError() {
         coroutineScope.launch {
             _dataFlow.emit(DataStatus.ResultMessage.Error(generalErrorMessage))
+        }
+    }
+
+    override fun didEncounteredInternetConnectionError() {
+        coroutineScope.launch {
+            _dataFlow.emit(DataStatus.ResultMessage.Error("Internet connection error."))
         }
     }
 
@@ -87,6 +90,8 @@ object ClearentDemoDataSource : ClearentWrapperListener {
             )
         }
     }
+
+    override fun didReceiveTerminalSettings(terminalSettings: TerminalSettings) {}
 
     override fun didStartBTSearch() {}
 
